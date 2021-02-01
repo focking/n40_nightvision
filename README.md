@@ -1,4 +1,5 @@
-# n40_nightvision
+# N40 Night Vision Core
+![alt text](https://user-images.githubusercontent.com/20739103/106505948-100f0500-64da-11eb-9bcb-0389dd51c989.png)
 Current NOD List: <br>
 PVS-14<br>
 <br>
