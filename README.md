@@ -1,11 +1,13 @@
 # n40_nightvision
-
-Bind n40_nod to toggle NODs <br>
+Current NOD List: <br>
+PVS-14<br>
+<br>
+To use NODs type "bind <key> n40_nod" in console <br>
 Entity located in Entities - N40 Nods <br>
-Use n40_luminocity (0-20) to increase brightness on certain maps<br>
+Use n40_luminocity (0-20) convar to increase brightness on certain maps<br>
 
-Sounds from Insurgency<br>
-Models by BSG, ported by GroveZ<br>
+Sounds from Insurgency by NWI<br>
+Model by BSG, ported by GroveZ<br>
 LUA shitpost by me<br>
 
 
