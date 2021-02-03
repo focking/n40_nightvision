@@ -22,8 +22,9 @@ end
 
 function ENT:Use(activator,caller)
     if activator:IsPlayer() then 
-        if activator:GetNWBool("N40_PLAYER_HAS_NVG") == true then return end 
-        activator:SetNWBool("N40_PLAYER_HAS_NVG",true)
+        if activator.N40_NOD != "" then return end
+        activator:SetNWString("N40_PLAYER_NVG","PVS14")
+        activator.N40_NOD = "PVS14"
         self:Remove()
     end 
 end 
