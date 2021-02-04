@@ -78,7 +78,6 @@ N40_NVGLIST = {
 }
 
 net.Receive( "n40_nvg_deactivate", function( len, pl )
-	PLAYER_NOD = net.ReadString()
 	N40_RemoveCastLight()
 end )
 
