@@ -17,7 +17,7 @@ CreateClientConVar( "n40_luminocity", 0, true, false, "", 0, 20 )
 N40_TOYTOWN = ScrH()/2
 
 N40_NVGLIST = {
-	["PVS14"] = {
+	["n40_pvs14"] = {
 		overlay = "nod2.png",
 		distance = 4000,
 		fov = 90,
@@ -36,7 +36,7 @@ N40_NVGLIST = {
 			[ "$pp_colour_mulb" ] = 0
 		}
 	},
-	["PVS15"] = {
+	["n40_pvs15"] = {
 		overlay = "nod4.png",
 		distance = 9000,
 		fov = 110,
@@ -56,7 +56,7 @@ N40_NVGLIST = {
 		},
 
 	},
-	["GPNVG"] = {
+	["n40_gpnvg"] = {
 		overlay = "nod5.png",
 		distance = 6000,
 		fov = 100,
@@ -78,7 +78,6 @@ N40_NVGLIST = {
 }
 
 net.Receive( "n40_nvg_deactivate", function( len, pl )
-	PLAYER_NOD = net.ReadString()
 	N40_RemoveCastLight()
 end )
 
@@ -88,6 +87,7 @@ net.Receive( "n40_nvg_activate", function( len, pl )
 end )
 function N40_RemoveCastLight()
 	if LocalPlayer().NOD then 
+		N40_NVG_ACTIVE = false
 		LocalPlayer().NOD:Remove()
 	end 
 end 
@@ -96,6 +96,7 @@ mat_noise = Material( "noise_nvg_sharp" )
 
 
 function N40_CastLight()
+	N40_NVG_ACTIVE = true
 	local illumination = ProjectedTexture() -- Im not gay, but 60 fps is 60 fps
 	illumination:SetTexture( "effects/flashlight001" )
 	illumination:SetFarZ( N40_NVGLIST[PLAYER_NOD].distance ) 
@@ -110,6 +111,7 @@ end
 
 hook.Add( "Think", "N40_ThinkHookNOD", function()
 	if LocalPlayer():GetNWBool("N40_PLAYER_NVG_ACTIVE") == true then 
+		if not LocalPlayer():Alive() then return end 
 		LocalPlayer().NOD:SetPos( LocalPlayer():EyePos()+Vector(0,0,2) + LocalPlayer():GetForward()*4 )
 		LocalPlayer().NOD:SetAngles( LocalPlayer():GetAngles() )
 
@@ -127,7 +129,9 @@ end )
 
 
 hook.Add( "RenderScreenspaceEffects", "color_modify_example", function()
-	if LocalPlayer():GetNWBool("N40_PLAYER_NVG_ACTIVE") == true then 
+	if LocalPlayer():GetNWBool("N40_PLAYER_NVG_ACTIVE") == true then
+			if not LocalPlayer():Alive() then return end 
+ 
 		DrawColorModify( N40_NVGLIST[PLAYER_NOD].color_mod )
 		DrawToyTown(8, N40_TOYTOWN)
 		DrawBloom(0.5, 1, 5, 5, 1, 0, 1, 1, 1)
@@ -137,14 +141,18 @@ end )
 
 hook.Add( "HUDPaint", "N40_ThinkHookNOD", function()
 	if LocalPlayer():GetNWBool("N40_PLAYER_NVG_ACTIVE") == true then 
+				if not LocalPlayer():Alive() then return end 
+
  		 DrawMaterialOverlay(N40_NVGLIST[PLAYER_NOD].overlay, 0)
 	end 
 end )
 
 hook.Add( "HUDPaintBackground", "N40_ThinkHookNOD2", function()
 	if LocalPlayer():GetNWBool("N40_PLAYER_NVG_ACTIVE") == true then 
+		if not LocalPlayer():Alive() then return end 
+
  		surface.SetMaterial( mat_noise )
-  		surface.SetDrawColor( N40_NVGLIST[PLAYER_NOD].noise_col )
+  		surface.SetDrawColor( Color(N40_NVGLIST[PLAYER_NOD].noise_col.r,N40_NVGLIST[PLAYER_NOD].noise_col.g,N40_NVGLIST[PLAYER_NOD].noise_col.b,N40_NVGLIST[PLAYER_NOD].noise_col.a) )
    		surface.DrawTexturedRect( 0 , 0 , ScrW(), ScrH() )
    		surface.DrawTexturedRect( 0 , 0 , ScrW(), ScrH() )
    		surface.DrawTexturedRect( 0 , 0 , ScrW(), ScrH() )
